@@ -22,24 +22,25 @@ if __name__ == '__main__':
     logger.info("Hey, welcome to the game")
     # login()
     
-    endless_mode(
-        close_app_after_chest_full=False,
-        buddy_help_enable_flag=True,
-        endless_selection='world_challenge'
-    )
+    # endless_mode(
+    #     close_app_after_chest_full=False,
+    #     buddy_help_enable_flag=True,
+    #     endless_selection='world_challenge'
+    # )
     # find_chest()
     # explore()
     # shop_ad_gift()
-    # energy_buy(ad_video_buy_count=4)
-    # standard(
-    #     main_material_order=['4','5',   '3'],
-    #     sub_h_material_dict={'h-1': 3 , 'h-2': 3, 'h-3': 2, 'h-4': 3 , },
-    #     sub_4_material_dict={'4-1': 30, '4-2': 31, '4-3': 39, '4-4': 34, },
-    #     sub_5_material_dict={'5-1': 14, '5-2': 14, '5-3': 15, '5-4': 14, },
-    #     sub_3_material_dict={'3-1': 1 , '3-2': 1 , '3-3': 1 , '3-4': 1 , },
-    #     close_app_after_energy_empty=True,
-    #     normal_confidence=0.968, hero_confidence=0.975
-    # )
+    # energy_buy(ad_video_buy_count=2)
+    standard(
+        main_material_order=['4','5','3','h',],
+        stage_offset_list=[2, 0, 0, 0, ],
+        sub_h_material_dict={'h-1': 0 , 'h-2': 0, 'h-3': 1, 'h-4': 1 , },
+        sub_4_material_dict={'4-1': 36, '4-2': 38, '4-3': 33, '4-4': 27, },
+        sub_5_material_dict={'5-1': 11, '5-2': 11, '5-3': 11, '5-4': 11, },
+        sub_3_material_dict={'3-1': 1 , '3-2': 1 , '3-3': 1 , '3-4': 1 , },
+        close_app_after_energy_empty=True,
+        normal_confidence=0.968, hero_confidence=0.975
+    )
 
     # from pywinauto import Application
     # # from pywinauto import Application

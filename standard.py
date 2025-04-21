@@ -10,6 +10,7 @@ from battle_stage import battle_stage
 
 def standard(
         main_material_order=['h', '4', '5', '3'],
+        stage_offset_list=['0', '0', '0', '0'],
         sub_h_material_dict={'h-1': 0, 'h-2': 0, 'h-3': 0, 'h-4': 0, },
         sub_4_material_dict={'4-1': 0, '4-2': 0, '4-3': 0, '4-4': 0, },
         sub_5_material_dict={'5-1': 0, '5-2': 0, '5-3': 0, '5-4': 0, },
@@ -36,9 +37,11 @@ def standard(
 
 
     # 按照星级材料顺序开打
-    for material_main in main_material_order:
+    for index,material_main in enumerate(main_material_order):
         # 提示要打是多少星的材料
         logger.info("要打"+str(material_main)+"星材料")
+        # 读取对应的偏移量
+        stage_offset = stage_offset_list[index]
         # 不同星级材料共用的战斗顺序，每次战斗完毕后，保持从小到大的顺序
         if material_main == 'h':
             material_no_main_str = 'h'
@@ -99,9 +102,9 @@ def standard(
             material_no_sub_str = main_sub_material_num_temple[0].split('-')[1]
             logger.info("当前星级材料为："+material_no_main_str+"星，当前子关卡为："+material_no_sub_str)
             # 下方循环用的fail_cnt和total_cnt需要重置
-            fail_cnt, total_cnt = 0, 1
+            fail_cnt, total_cnt = 0, 1+stage_offset
             # 同一种材料的不同关卡的循环
-            while fail_cnt < total_cnt:
+            while fail_cnt < total_cnt - stage_offset:
                 # 点击快速扫荡
                 time.sleep(2)
                 location = pyautogui.locateOnWindow('assets/standard/quick_sweep.png', '雷霆战机：集结', confidence=0.8)
@@ -149,8 +152,10 @@ def standard(
                     #     total_cnt = total_cnt - 1
                     # except ImageNotFoundException:
                     #     logger.info("没有活动关卡，或者活动关卡打不了")
-                    logger.info(f"有{total_cnt}个关卡能匹配到，当前fail的关卡{fail_cnt}个")
-                    if total_cnt - fail_cnt <= 0:
+                    logger.info(f"有{total_cnt}个关卡能匹配到，关卡偏移{stage_offset}, fail的关卡{fail_cnt}个")
+                    stage_go_locations = stage_go_locations[stage_offset:]
+                    logger.info(f"当前可攻打的关卡有{len(stage_go_locations)-fail_cnt}个")
+                    if total_cnt - stage_offset - fail_cnt <= 0:
                         logger.info("没有能打赢的关卡了")
                         time.sleep(2)
                         location = pyautogui.locateOnWindow('assets/standard/quit_quick_sweep_and_stage_card.png', '雷霆战机：集结', confidence=0.8)
@@ -162,7 +167,7 @@ def standard(
                         logger.info("退出快速扫荡页")
                     else:
                         # 点击total-fail的最后一个进入关卡
-                        location = stage_go_locations[total_cnt - fail_cnt - 1]
+                        location = stage_go_locations[total_cnt - stage_offset - fail_cnt - 1]
                         pyautogui.click(location)
                         logger.info("点击排除失败后的最后一个关卡")
                         if str(material_main) == 'h':
